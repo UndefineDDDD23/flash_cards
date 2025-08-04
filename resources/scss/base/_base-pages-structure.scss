@@ -1,0 +1,21 @@
+// _pages-structure.scss
+
+body, html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.main {
+    flex: 1 0 auto;
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+}
+
+.footer {
+    flex: 0 0 auto;
+}

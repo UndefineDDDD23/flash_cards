@@ -1,0 +1,6 @@
+// _adaptive-mixin.scss
+
+@mixin adaptive-property($property, $maxSize, $minSize, $containerMaxWidth) {
+    #{$property}: calc(#{$minSize}px + (#{$maxSize - $minSize}) * ((100vw - 320px) / #{$containerMaxWidth - 320}));
+}
+

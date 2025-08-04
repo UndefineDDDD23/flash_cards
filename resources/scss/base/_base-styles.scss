@@ -1,0 +1,22 @@
+$body-bg-color: #ffffff;
+$body-text-color: #000000;
+$links-color: #ffffff;
+$links-hover-color: #e47f7f;
+$default-transition-duration: 0.3s;
+
+* {
+    transition-duration: $default-transition-duration;
+}
+
+body {
+    background-color: $body-bg-color;
+    color: $body-text-color;
+}
+
+a {
+    color: $links-color;
+    
+    &:hover {
+        color: $links-hover-color;
+    }
+}
