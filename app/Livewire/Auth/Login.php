@@ -2,11 +2,14 @@
 
 namespace App\Livewire\Auth;
 
-use App\Validation\Fields\ValidationPasswordField;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\RateLimiter;
 use App\Validation\Fields\ValidationEmailField;
+use App\Validation\Fields\ValidationPasswordField;
 
 class Login extends Component
 {
@@ -46,14 +49,32 @@ class Login extends Component
 
     public function login() {
         $credentials = $this->validate();
-        dd($credentials, $this->remember);
-        // if(Auth::attempt($credentials, $this->remember)) {
-        //     Session::regenerate();
+        $throttleKey = 'login-'. $this->throttleKey();
 
-        //     $this->redirect(route('welcome'));
-        // }
+        if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+            return;
+        }
+
+        if(Auth::attempt($credentials, $this->remember)) {
+            RateLimiter::clear($throttleKey);
+            Session::regenerate();
+            $this->redirect(route('welcome'));
+        }
+        else {
+            RateLimiter::hit($throttleKey, 60);
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
+        }
     }
 
+    /**
+     * Get the authentication rate limiting throttle key.
+     */
+    protected function throttleKey(): string
+    {
+        return Str::transliterate(Str::lower($this->email).'|' . request()->ip());
+    }
     public function render()
     {
         return view('livewire.auth.login')

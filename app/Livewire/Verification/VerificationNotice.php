@@ -11,7 +11,7 @@ class VerificationNotice extends Component
 {
     public function resendVerificationNotification() {
         $user = Auth::user();
-        $key = 'livewire-action-'. $user->id;
+        $key = 'verification-send-notification-'. $user->id;
 
         if (RateLimiter::tooManyAttempts($key, 5)) { // максимум 5 раз в минуту
             return;

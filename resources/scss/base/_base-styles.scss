@@ -12,11 +12,3 @@ body {
     background-color: $body-bg-color;
     color: $body-text-color;
 }
-
-a {
-    color: $links-color;
-    
-    &:hover {
-        color: $links-hover-color;
-    }
-}

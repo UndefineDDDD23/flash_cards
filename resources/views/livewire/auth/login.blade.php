@@ -1,14 +1,14 @@
 <main class="main">
-    <div class="register-container">
+    <div class="form-input-container">
         <h1>{{ __('pages-content.login') }}</h1>      
-        <div class="register-container__input">            
+        <div class="form-input-container__input">            
             @error('email')
                <p class="validation-error">{{ $message }}</p> 
             @enderror
             <label for="email">{{ __('pages-content.email') }}</label>
             <input id="email" wire:model="email" label="{{ __('pages-content.email') }}"/>   
         </div>
-        <div class="register-container__input">        
+        <div class="form-input-container__input">        
             @error('password')
                <p class="validation-error">{{ $message }}</p> 
             @enderror
@@ -16,10 +16,13 @@
             <input id="password" wire:model="password" label="{{ __('pages-content.password') }}"/>
         </div> 
         
-        <div class="register-container__input">        
+        <div class="form-input-container__input">        
             <label for="remember">{{ __('pages-content.remember') }}</label>   
             <input id="remember" type="checkbox" wire:model="remember" label="{{ __('pages-content.password') }}"/>
         </div> 
+
+        <a href="{{ route('password.request') }}">Forgot password</a>
+
         <button wire:click="login">{{ __('pages-content.send_button') }}</button>
     </div>
 </main>
