@@ -21,7 +21,7 @@ class CreateFlashCard extends Component
     public function generateDescriptionByAI() {
         $dictionaryService = new DictionaryService();
         $user = Auth::user();
-        $dictionaryElement = DictionaryElement::where('element_text', '=', $this->studiedLanguageWord);
+        $dictionaryElement = DictionaryElement::where('element_text', '=', $this->studiedLanguageWord)->first();
         if(!$dictionaryElement) {            
             $openRouterModel = new OpenRouterDictionaryMistral($dictionaryService);
             $dictionaryElement = $openRouterModel->generateWordDescription($user->nativeLanguage, $user->studiedLanguage, $this->studiedLanguageWord);
