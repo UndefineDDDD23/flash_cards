@@ -21,11 +21,14 @@ return [
     'language_code'                         => 'Код языка',
     'native_language'                       => 'Родной язык',
     'studied_language'                      => 'Изучаемый язык',
+    'studied_language_word_description'     => 'Описание изучаемого слова на изучаемом языке',
+    'native_language_word_description'      => 'Описание изучаемого слова на родном языке',
     'send_button'                           => 'Отправить',
     'verification'                          => 'Верификация',
     'verification_resend_button_text'       => 'Отправить инструкции заново',
     'verification_instruction_sent'         => 'Инструкции верификации отправлены.',
     'verification_instruction_description'  => 'Вам было отправлено сообщение на почту с инструкциями верификации',
     'login'                                 => 'Логин',
-    'remember'                              => 'Запомнить?'
+    'remember'                              => 'Запомнить?',
+    'generate_ai_description_button'        => 'Сгенерировать описание с помощью ИИ',
 ];

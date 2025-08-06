@@ -4,7 +4,6 @@ namespace App\Models\Languages;
 
 use App\Models\User;
 use App\Models\StudyTasks\StudyTopic;
-use App\Models\Dictionary\PartOfSpeech;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Dictionary\DictionaryElement;
 
@@ -20,11 +19,6 @@ class Language extends Model
     public function usersNative()
     {
         return $this->hasMany(User::class, 'native_language_id');
-    }
-
-    public function partsOfSpeech()
-    {
-        return $this->hasMany(PartOfSpeech::class);
     }
 
     public function dictionaryElements()

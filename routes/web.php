@@ -16,7 +16,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 use Illuminate\Support\Facades\Http;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('pages.welcome');
 })->name('welcome');
 
 Route::middleware('guest')->group(function () {
@@ -32,6 +32,12 @@ Route::middleware('auth')->group(function () {
         $request->fulfill();
         return redirect(route('welcome'));
     })->middleware(['auth', 'signed'])->name('verification.verify');
+
+    Route::prefix('flash-cards')->name('flash-cards-')->group(function() {
+        Route::get('/', function () {
+            return view('pages.flash-cards.flash-cards-list');
+        })->name('list');
+    });
 });
 
 

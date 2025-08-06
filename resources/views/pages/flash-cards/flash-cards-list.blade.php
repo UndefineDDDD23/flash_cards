@@ -3,7 +3,7 @@
     <x-pages-structure.header/>
 
         <main class="main">
-            MAIN
+            <livewire:flash-cards.create-flash-card/>
         </main>
 
     <x-pages-structure.footer/>

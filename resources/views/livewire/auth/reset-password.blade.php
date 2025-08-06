@@ -1,17 +1,13 @@
 <main class="main">
     <div class="form-input-container">
         <h1>{{ __('pages-content.form-input') }}</h1>
-        <div class="form-input-container__input">        
-            @error('password')
-               <p class="validation-error">{{ $message }}</p> 
-            @enderror
+        <div class="form-input-container__input">  
+            <x-validation.error-message :key="'password'"/>
             <label for="password">{{ __('pages-content.password') }}</label>   
             <input id="password" wire:model="password" label="{{ __('pages-content.password') }}"/>
         </div> 
-        <div class="form-input-container__input">        
-            @error('passwordConfirmation')
-               <p class="validation-error">{{ $message }}</p> 
-            @enderror
+        <div class="form-input-container__input">     
+            <x-validation.error-message :key="'passwordConfirmation'"/>
             <label for="passwordConfirmation">{{ __('pages-content.password_confirmation') }}</label>
             <input id="passwordConfirmation" wire:model="passwordConfirmation" label="{{ __('pages-content.password_confirmation') }}"/>
         </div> 
