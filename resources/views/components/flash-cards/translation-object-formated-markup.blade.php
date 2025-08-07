@@ -1,3 +1,7 @@
+@props(['translation'])
+
+{{-- This component displays the formatted translation details for a flash card. --}}
+{{-- It is used to show the meaning, usage, synonyms, and examples of a word in the studied language. --}}
 @isset($translation)
     <div>
         <h3>{{ __('pages-content.studied_language') }}</h3>
