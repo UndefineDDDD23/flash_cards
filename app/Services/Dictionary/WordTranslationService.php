@@ -8,7 +8,7 @@ use App\Models\Dictionary\DictionaryElement;
 use App\Contracts\Dictionary\WordTranslationServiceInterface;
 
 class WordTranslationService implements WordTranslationServiceInterface {
-    public function createDictionaryEntry(array $data, Language $toLanguage, Language $fromLanguage): DictionaryElement
+    public function createDictionaryEntry(array $data, Language $toLanguage, Language $fromLanguage, bool $isAiGenerated = false): DictionaryElement
     {        
         $element = DictionaryElement::create([            
             'language_id'   => $fromLanguage->id, 
@@ -17,7 +17,7 @@ class WordTranslationService implements WordTranslationServiceInterface {
             'element_text'  => $data['element_text'],
             'synonyms'      => json_encode($data['synonyms']), 
             'examples'      => json_encode($data['examples']), 
-            'is_ai_generated' => $data['is_ai_generated'] ?? false
+            'is_ai_generated' => $isAiGenerated
         ]);
 
         $translation = Translation::create([

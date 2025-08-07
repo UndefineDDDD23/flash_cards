@@ -129,7 +129,7 @@ class OpenRouterDictionaryMistral extends OpenRouter implements OpenRouterDictio
             }
             else {
                 $json = json_decode($cleanJson, true);
-                return $this->getWordTranslationService()->createDictionaryEntry($json, $nativeLanguage, $studiedLanguage);
+                return $this->getWordTranslationService()->createDictionaryEntry($json, $nativeLanguage, $studiedLanguage, true);
             }
         }
 
