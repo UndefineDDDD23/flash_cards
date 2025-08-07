@@ -19,6 +19,11 @@ class Translation extends Model
         'translated_how_to_use'
     ];
 
+    protected $casts = [
+        'translated_synonyms' => 'array',
+        'translated_examples' => 'array',
+    ];
+
     public function language()
     {
         return $this->belongsTo(Language::class, 'translation_language_id');
@@ -32,5 +37,31 @@ class Translation extends Model
     public function flashCards()
     {
         return $this->hasMany(FlashCard::class);
+    }
+
+    public function getFormattedSynonymsAttribute()
+    {
+        $synonyms = $this->translated_synonyms;
+
+        if (!is_array($synonyms)) {
+            return '';
+        }
+
+        return collect($synonyms)
+            ->map(fn($value, $key) => "$key — $value")
+            ->implode("\n");
+    }
+
+    public function getFormattedExamplesAttribute()
+    {
+        $examples = $this->translated_examples;
+
+        if (!is_array($examples)) {
+            return '';
+        }
+
+        return collect($examples)
+            ->map(fn($value, $key) => "$key — $value")
+            ->implode("\n");
     }
 }

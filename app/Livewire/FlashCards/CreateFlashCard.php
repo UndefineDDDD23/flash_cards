@@ -6,6 +6,7 @@ use App\Models\Dictionary\DictionaryElement;
 use App\Services\Dictionary\WordTranslationService;
 use Livewire\Component;
 use App\Models\Languages\Language;
+use App\Models\Dictionary\Translation;
 use Illuminate\Support\Facades\Auth;
 use App\Services\AI\OpenRouterDictionaryMistral;
 
@@ -14,6 +15,8 @@ class CreateFlashCard extends Component
     public string $studiedLanguageWord;
     public string $translatedStudiedLanguageWord;
     public string $studiedWordDescription;
+
+    public Translation $translation;
     
     public function mount() {
     }
@@ -26,9 +29,7 @@ class CreateFlashCard extends Component
             $openRouterModel = new OpenRouterDictionaryMistral($wordTranslationService);
             $dictionaryElement = $openRouterModel->generateWordDescription($user->nativeLanguage, $user->studiedLanguage, $this->studiedLanguageWord);
         }
-        $translation = $dictionaryElement->translations()->firstWhere('translation_language_id', $user->nativeLanguage->id);
-        $this->translatedStudiedLanguageWord = $translation->translated_element_text;
-        $this->studiedWordDescription = $wordTranslationService->formatEntryAsDescription($dictionaryElement, $user->nativeLanguage);
+        $this->translation = $dictionaryElement->translations()->firstWhere('translation_language_id', $user->nativeLanguage->id);
     }
 
     public function create() {

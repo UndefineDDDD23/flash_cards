@@ -8,8 +8,66 @@ use App\Models\Dictionary\DictionaryElement;
 use App\Contracts\Dictionary\WordTranslationServiceInterface;
 
 class WordTranslationService implements WordTranslationServiceInterface {
+    public function isValidDictionaryElementData(array $data): bool
+    {
+        // список обязательных ключей
+        $requiredKeys = [
+            'element_text',
+            'translated_element_text',
+            'meaning',
+            'translated_meaning',
+            'synonyms',
+            'translated_synonyms',
+            'examples',
+            'translated_examples',
+            'how_to_use',
+            'translated_how_to_use',
+        ];
+
+        // проверка наличия всех ключей
+        foreach ($requiredKeys as $key) {
+            if (!array_key_exists($key, $data)) {
+                return false;
+            }
+        }
+
+        // проверка строковых полей
+        $stringFields = [
+            'element_text',
+            'translated_element_text',
+            'meaning',
+            'translated_meaning',
+            'how_to_use',
+            'translated_how_to_use',
+        ];
+        foreach ($stringFields as $field) {
+            if (!is_string($data[$field]) || trim($data[$field]) === '') {
+                return false;
+            }
+        }
+
+        // проверка массивов-словари (ассоциативные массивы)
+        $dictFields = ['synonyms', 'translated_synonyms', 'examples', 'translated_examples'];
+        foreach ($dictFields as $field) {
+            if (!is_array($data[$field]) || empty($data[$field])) {
+                return false;
+            }
+
+            foreach ($data[$field] as $key => $value) {
+                if (!is_string($key) || trim($key) === '' || !is_string($value) || trim($value) === '') {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
     public function createDictionaryEntry(array $data, Language $toLanguage, Language $fromLanguage, bool $isAiGenerated = false): DictionaryElement
     {        
+        if(!$this->isValidDictionaryElementData($data)) {
+            throw new \InvalidArgumentException('Invalid dictionary element data provided.');
+        }
+
         $element = DictionaryElement::create([            
             'language_id'   => $fromLanguage->id, 
             'meaning'       => $data['meaning'],
@@ -31,34 +89,5 @@ class WordTranslationService implements WordTranslationServiceInterface {
         ]);
 
         return $element;
-    }
-
-    public function formatEntryAsDescription(DictionaryElement $dictionaryElement, Language $translationLanguage): string
-    {
-        $translation = $dictionaryElement
-            ->translations()
-            ->firstWhere('translation_language_id', $translationLanguage->id);
-
-        // Декодируем JSON в ассоциативные массивы
-        $synonyms = json_decode($translation->translated_synonyms, true);
-        $examples = json_decode($translation->translated_examples, true);
-
-        // Форматируем синонимы с ключами
-        $synonymsText = collect($synonyms)
-            ->map(fn($value, $key) => "$key — $value")
-            ->implode("\n");
-
-        // Форматируем примеры с ключами
-        $examplesText = collect($examples)
-            ->map(fn($value, $key) => "$key — $value")
-            ->implode("\n");
-
-        // Собираем финальный текст
-        $description = __('pages-content.meaning'). ":\n" . $translation->translated_meaning . "\n\n" .
-                    __('pages-content.synonyms'). ":\n" . $synonymsText . "\n\n" .
-                    __('pages-content.examples'). ":\n" . $examplesText . "\n\n" .
-                    __('pages-content.how_to_use'). ":\n" . $translation->translated_how_to_use;
-
-        return $description;
     }
 }

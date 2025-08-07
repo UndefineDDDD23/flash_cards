@@ -27,60 +27,10 @@ class OpenRouterDictionaryMistral extends OpenRouter implements OpenRouterDictio
         $data = json_decode($json, true);
 
         if (json_last_error() !== JSON_ERROR_NONE || !is_array($data)) {
-            return false; // невалидный JSON
+            return false;
         }
 
-        // список обязательных ключей
-        $requiredKeys = [
-            'element_text',
-            'translated_element_text',
-            'meaning',
-            'translated_meaning',
-            'synonyms',
-            'translated_synonyms',
-            'examples',
-            'translated_examples',
-            'how_to_use',
-            'translated_how_to_use',
-        ];
-
-        // проверка наличия всех ключей
-        foreach ($requiredKeys as $key) {
-            if (!array_key_exists($key, $data)) {
-                return false;
-            }
-        }
-
-        // проверка строковых полей
-        $stringFields = [
-            'element_text',
-            'translated_element_text',
-            'meaning',
-            'translated_meaning',
-            'how_to_use',
-            'translated_how_to_use',
-        ];
-        foreach ($stringFields as $field) {
-            if (!is_string($data[$field]) || trim($data[$field]) === '') {
-                return false;
-            }
-        }
-
-        // проверка массивов-словари (ассоциативные массивы)
-        $dictFields = ['synonyms', 'translated_synonyms', 'examples', 'translated_examples'];
-        foreach ($dictFields as $field) {
-            if (!is_array($data[$field]) || empty($data[$field])) {
-                return false;
-            }
-
-            foreach ($data[$field] as $key => $value) {
-                if (!is_string($key) || trim($key) === '' || !is_string($value) || trim($value) === '') {
-                    return false;
-                }
-            }
-        }
-
-        return true; // всё прошло
+        return $this->wordTranslationService->isValidDictionaryElementData($data);
     }
 
     public function generateWordDescription(Language $nativeLanguage, Language $studiedLanguage, string $word): DictionaryElement|bool
