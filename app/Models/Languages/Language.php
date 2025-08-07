@@ -2,6 +2,7 @@
 
 namespace App\Models\Languages;
 
+use App\Models\Dictionary\Translation;
 use App\Models\User;
 use App\Models\StudyTasks\StudyTopic;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +25,11 @@ class Language extends Model
     public function dictionaryElements()
     {
         return $this->hasMany(DictionaryElement::class);
+    }
+    
+    public function translations()
+    {
+        return $this->hasMany(Translation::class);
     }
 
     public function studyTopics()

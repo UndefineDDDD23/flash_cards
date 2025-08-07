@@ -17,7 +17,6 @@ abstract class OpenRouter implements OpenRouterInterface {
                 ['role' => 'system', 'content' => $message],
             ],
         ]);
-        dd($response);
         $data = $response->json();
 
         return $data['choices'][0]['message']['content'] ?? null;

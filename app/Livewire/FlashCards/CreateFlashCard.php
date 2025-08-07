@@ -26,8 +26,9 @@ class CreateFlashCard extends Component
             $openRouterModel = new OpenRouterDictionaryMistral($dictionaryService);
             $dictionaryElement = $openRouterModel->generateWordDescription($user->nativeLanguage, $user->studiedLanguage, $this->studiedLanguageWord);
         }
-        $this->translatedStudiedLanguageWord = $dictionaryElement->translation->translated_element_text;
-        $this->studiedWordDescription = $dictionaryElement->translation->translated_description;
+        $translation = $dictionaryElement->translations()->firstWhere('translation_language_id', $user->nativeLanguage->id);
+        $this->translatedStudiedLanguageWord = $translation->translated_element_text;
+        $this->studiedWordDescription = $dictionaryService->getCompiledDictionaryElementDescription($dictionaryElement, $user->nativeLanguage);
     }
 
     public function create() {

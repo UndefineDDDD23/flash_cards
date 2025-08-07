@@ -94,10 +94,10 @@ class OpenRouterDictionaryMistral extends OpenRouter implements OpenRouterDictio
             "translated_element_text": string,  // переведённое слово на языке {$nativeLanguage->code}
             "meaning": string,                  // полное, развёрнутое описание значения на языке {$studiedLanguage->code}
             "translated_meaning": string,       // полное, развёрнутое описание значения на языке {$nativeLanguage->code}
-            "synonyms": {                       // синонимы: ключ — слово на {$studiedLanguage->code}, значение — перевод на {$studiedLanguage->code}
+            "synonyms": {                       // синонимы: ключ — слово на {$studiedLanguage->code}, значение — на том же {$studiedLanguage->code}
                 string: string
             },
-            "translated_synonyms": {            // синонимы: ключ — слово на {$studiedLanguage->code}, значение — описание слова на {$nativeLanguage->code}
+            "translated_synonyms": {            // синонимы: ключ — слово на {$studiedLanguage->code}, значение — перевод слова на {$nativeLanguage->code}
                 string: string
             },
             "examples": {                       // примеры использования: ключ — пример на {$studiedLanguage->code}, значение — на {$studiedLanguage->code}

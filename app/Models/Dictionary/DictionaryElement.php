@@ -11,8 +11,11 @@ class DictionaryElement extends Model
 {
     protected $fillable = [
         'language_id', 
-        'description', 
-        'element_text'
+        'element_text', 
+        'synonyms', 
+        'meaning', 
+        'examples', 
+        'how_to_use'
     ];
 
     public function language()
@@ -20,7 +23,7 @@ class DictionaryElement extends Model
         return $this->belongsTo(Language::class);
     }
 
-    public function translation() {
-        return $this->hasMany(Translation::class);
+    public function translations() {
+        return $this->hasMany(Translation::class, 'dictionary_element_id');
     }
 }
