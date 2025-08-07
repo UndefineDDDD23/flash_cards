@@ -7,19 +7,19 @@ use App\Models\Dictionary\DictionaryElement;
 use App\Services\AI\OpenRouter;
 use App\Models\Languages\Language;
 use App\Contracts\AI\OpenRouterDictionaryInterface;
-use App\Services\Dictionary\DictionaryService;
+use App\Services\Dictionary\WordTranslationService;
 
 class OpenRouterDictionaryMistral extends OpenRouter implements OpenRouterDictionaryInterface, OpenRouterInterface
 {
     protected string $model = 'mistralai/mistral-small-3.2-24b-instruct:free';
-    protected DictionaryService $dictionaryService;
+    protected WordTranslationService $wordTranslationService;
 
-    public function __construct(DictionaryService $dictionaryService) {
-        $this->dictionaryService = $dictionaryService;
+    public function __construct(WordTranslationService $wordTranslationService) {
+        $this->wordTranslationService = $wordTranslationService;
     }
 
-    public function getDictionaryService(): DictionaryService {
-        return $this->dictionaryService;
+    public function getWordTranslationService(): WordTranslationService {
+        return $this->wordTranslationService;
     }
 
     protected function isValidJsonAiResult(string $json): bool
@@ -129,7 +129,7 @@ class OpenRouterDictionaryMistral extends OpenRouter implements OpenRouterDictio
             }
             else {
                 $json = json_decode($cleanJson, true);
-                return $this->getDictionaryService()->saveWord($json, $nativeLanguage, $studiedLanguage);
+                return $this->getWordTranslationService()->createDictionaryEntry($json, $nativeLanguage, $studiedLanguage);
             }
         }
 

@@ -15,7 +15,8 @@ class DictionaryElement extends Model
         'synonyms', 
         'meaning', 
         'examples', 
-        'how_to_use'
+        'how_to_use',
+        'is_ai_generated'
     ];
 
     public function language()

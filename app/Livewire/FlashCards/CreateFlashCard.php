@@ -3,7 +3,7 @@
 namespace App\Livewire\FlashCards;
 
 use App\Models\Dictionary\DictionaryElement;
-use App\Services\Dictionary\DictionaryService;
+use App\Services\Dictionary\WordTranslationService;
 use Livewire\Component;
 use App\Models\Languages\Language;
 use Illuminate\Support\Facades\Auth;
@@ -19,16 +19,16 @@ class CreateFlashCard extends Component
     }
 
     public function generateDescriptionByAI() {
-        $dictionaryService = new DictionaryService();
+        $wordTranslationService = new WordTranslationService();
         $user = Auth::user();
         $dictionaryElement = DictionaryElement::where('element_text', '=', $this->studiedLanguageWord)->first();
         if(!$dictionaryElement) {            
-            $openRouterModel = new OpenRouterDictionaryMistral($dictionaryService);
+            $openRouterModel = new OpenRouterDictionaryMistral($wordTranslationService);
             $dictionaryElement = $openRouterModel->generateWordDescription($user->nativeLanguage, $user->studiedLanguage, $this->studiedLanguageWord);
         }
         $translation = $dictionaryElement->translations()->firstWhere('translation_language_id', $user->nativeLanguage->id);
         $this->translatedStudiedLanguageWord = $translation->translated_element_text;
-        $this->studiedWordDescription = $dictionaryService->getCompiledDictionaryElementDescription($dictionaryElement, $user->nativeLanguage);
+        $this->studiedWordDescription = $wordTranslationService->formatEntryAsDescription($dictionaryElement, $user->nativeLanguage);
     }
 
     public function create() {

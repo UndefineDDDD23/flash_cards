@@ -4,9 +4,9 @@ namespace App\Contracts\AI;
 
 use App\Models\Dictionary\DictionaryElement;
 use App\Models\Languages\Language;
-use App\Services\Dictionary\DictionaryService;
+use App\Services\Dictionary\WordTranslationService;
 
 interface OpenRouterDictionaryInterface {
-    public function getDictionaryService(): DictionaryService;
+    public function getWordTranslationService(): WordTranslationService;
     public function generateWordDescription(Language $nativeLanguage, Language $studiedLanguage, string $word): DictionaryElement|bool;
 }

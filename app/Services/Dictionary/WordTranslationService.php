@@ -5,12 +5,11 @@ namespace App\Services\Dictionary;
 use App\Models\Languages\Language;
 use App\Models\Dictionary\Translation;
 use App\Models\Dictionary\DictionaryElement;
-use App\Contracts\Dictionary\DictionaryServiceInterface;
+use App\Contracts\Dictionary\WordTranslationServiceInterface;
 
-class DictionaryService implements DictionaryServiceInterface {
-    public function saveWord(array $data, Language $toLanguage, Language $fromLanguage): DictionaryElement
-    {
-        
+class WordTranslationService implements WordTranslationServiceInterface {
+    public function createDictionaryEntry(array $data, Language $toLanguage, Language $fromLanguage): DictionaryElement
+    {        
         $element = DictionaryElement::create([            
             'language_id'   => $fromLanguage->id, 
             'meaning'       => $data['meaning'],
@@ -18,6 +17,7 @@ class DictionaryService implements DictionaryServiceInterface {
             'element_text'  => $data['element_text'],
             'synonyms'      => json_encode($data['synonyms']), 
             'examples'      => json_encode($data['examples']), 
+            'is_ai_generated' => $data['is_ai_generated'] ?? false
         ]);
 
         $translation = Translation::create([
@@ -33,7 +33,7 @@ class DictionaryService implements DictionaryServiceInterface {
         return $element;
     }
 
-    public function getCompiledDictionaryElementDescription(DictionaryElement $dictionaryElement, Language $translationLanguage): string
+    public function formatEntryAsDescription(DictionaryElement $dictionaryElement, Language $translationLanguage): string
     {
         $translation = $dictionaryElement
             ->translations()
@@ -54,10 +54,10 @@ class DictionaryService implements DictionaryServiceInterface {
             ->implode("\n");
 
         // Собираем финальный текст
-        $description = "Значение:\n" . $translation->translated_meaning . "\n\n" .
-                    "Синонимы:\n" . $synonymsText . "\n\n" .
-                    "Примеры:\n" . $examplesText . "\n\n" .
-                    "Примечания к использованию:\n" . $translation->translated_how_to_use;
+        $description = __('pages-content.meaning'). ":\n" . $translation->translated_meaning . "\n\n" .
+                    __('pages-content.synonyms'). ":\n" . $synonymsText . "\n\n" .
+                    __('pages-content.examples'). ":\n" . $examplesText . "\n\n" .
+                    __('pages-content.how_to_use'). ":\n" . $translation->translated_how_to_use;
 
         return $description;
     }

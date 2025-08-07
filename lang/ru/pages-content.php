@@ -31,4 +31,8 @@ return [
     'login'                                 => 'Логин',
     'remember'                              => 'Запомнить?',
     'generate_ai_description_button'        => 'Сгенерировать описание с помощью ИИ',
+    'synonyms'                              => 'Синонимы',
+    'examples'                              => 'Примеры',
+    'how_to_use'                            => 'Как использовать',
+    'meaning'                               => 'Значение',
 ];
