@@ -4,18 +4,23 @@ namespace App\Services\AI;
 
 use App\Contracts\AI\OpenRouterInterface;
 use App\Models\Dictionary\DictionaryElement;
-use App\Services\AI\OpenRouter;
+use App\Services\AI\OpenRouterMistral;
 use App\Models\Languages\Language;
 use App\Contracts\AI\OpenRouterDictionaryInterface;
 use App\Services\Dictionary\WordTranslationService;
 
-class OpenRouterDictionaryMistral extends OpenRouter implements OpenRouterDictionaryInterface, OpenRouterInterface
+class OpenRouterDictionary implements OpenRouterDictionaryInterface
 {
-    protected string $model = 'mistralai/mistral-small-3.2-24b-instruct:free';
     protected WordTranslationService $wordTranslationService;
+    protected OpenRouterInterface $openRouterModel;
 
-    public function __construct(WordTranslationService $wordTranslationService) {
+    public function __construct(WordTranslationService $wordTranslationService, OpenRouterInterface $openRouterModel) {
         $this->wordTranslationService = $wordTranslationService;
+        $this->openRouterModel = $openRouterModel;
+    }
+
+    public function getOpenRouterModel(): OpenRouterInterface {
+        return $this->openRouterModel;
     }
 
     public function getWordTranslationService(): WordTranslationService {
@@ -37,11 +42,12 @@ class OpenRouterDictionaryMistral extends OpenRouter implements OpenRouterDictio
     {
         $message = <<<EOT
             Ты лингвист и переводчик.  
-            Опиши слово "{$word}" и верни только JSON строго по шаблону:
+            Опиши слово\фразу "{$word}" и верни только JSON строго по шаблону:
 
             {
-            "element_text": string,             // слово на языке {$studiedLanguage->code}
-            "translated_element_text": string,  // переведённое слово на языке {$nativeLanguage->code}
+            "need_to_save": boolean,            // если слово\фразу нужно сохранить в словарь - true, иначе - false
+            "element_text": string,             // слово\фраза на языке {$studiedLanguage->code}
+            "translated_element_text": string,  // переведённое слово\фразу на языке {$nativeLanguage->code}
             "meaning": string,                  // полное, развёрнутое описание значения на языке {$studiedLanguage->code}
             "translated_meaning": string,       // полное, развёрнутое описание значения на языке {$nativeLanguage->code}
             "synonyms": {                       // синонимы: ключ — слово на {$studiedLanguage->code}, значение — на том же {$studiedLanguage->code}
@@ -67,9 +73,8 @@ class OpenRouterDictionaryMistral extends OpenRouter implements OpenRouterDictio
         $attemptsCount = 1;
 
         for ($attempt=1; $attempt <= $attemptsCount; $attempt++) { 
-            $response = $this->runApiQuery(
-                message: $message,
-                model: $this->model
+            $response = $this->openRouterModel->runApiQuery(
+                message: $message
             );
 
             $cleanJson = preg_replace('/^```(?:json)?\s*|```$/m', '', trim($response));            
@@ -79,7 +84,12 @@ class OpenRouterDictionaryMistral extends OpenRouter implements OpenRouterDictio
             }
             else {
                 $json = json_decode($cleanJson, true);
-                return $this->getWordTranslationService()->createDictionaryEntry($json, $nativeLanguage, $studiedLanguage, true);
+                if(!isset($json['need_to_save']) && $json['need_to_save']) {
+                    return false;
+                }
+                else {
+                    return $this->getWordTranslationService()->createDictionaryEntry($json, $nativeLanguage, $studiedLanguage, true);
+                }
             }
         }
 
