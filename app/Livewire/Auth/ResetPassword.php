@@ -12,15 +12,50 @@ use Illuminate\Auth\Events\PasswordReset;
 use App\Validation\Fields\ValidationPasswordField;
 use App\Validation\Fields\ValidationPasswordConfirmationField;
 
+/**
+ * Livewire component that completes the password reset flow.
+ *
+ * Accepts token and email (via query string), validates new password, and
+ * updates the user's credentials via Laravel's password broker.
+ */
 class ResetPassword extends Component
 {
+    /**
+     * Password reset token provided in the reset link.
+     * @var string
+     */
     public string $token;
+    /**
+     * Email associated with the password reset request.
+     * @var string
+     */
     public string $email;
+    /**
+     * Expose email in the query string for deep-linking.
+     * @var array<int, string>
+     */
     protected $queryString = ['email'];
+    /**
+     * New password (plain text; hashed before persistence).
+     * @var string
+     */
     public string $password;
+    /**
+     * Confirmation of the new password.
+     * @var string
+     */
     public string $passwordConfirmation;
+    /**
+     * Container for validation field objects.
+     * @var array<int, mixed>
+     */
     private array $validationRules = [];
 
+    /**
+     * Build validation field objects for password reset.
+     *
+     * @return array<int, \App\Validation\Fields\ValidationFieldInterface>
+     */
     protected function getValidationRules(): array
     {
         return [
@@ -29,6 +64,11 @@ class ResetPassword extends Component
         ];
     }
 
+    /**
+     * Compose rules including mandatory token presence.
+     *
+     * @return array<string, mixed>
+     */
     protected function rules() {
         $rules = [
             'token' => ['required']
@@ -41,6 +81,11 @@ class ResetPassword extends Component
         return $rules;
     }
 
+    /**
+     * Aggregate validation messages from field objects.
+     *
+     * @return array<string, string>
+     */
     protected function messages() {
         $messages = [];
 
@@ -51,6 +96,12 @@ class ResetPassword extends Component
         return $messages;
     }
 
+    /**
+     * Validate the payload and reset the user's password via the broker.
+     * On success, redirect to welcome page; otherwise flash failure state.
+     *
+     * @return void
+     */
     public function resetPassword() {
         $this->validate();
 
@@ -79,6 +130,11 @@ class ResetPassword extends Component
         }
     }
 
+    /**
+     * Render component view.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function render()
     {
         return view('livewire.auth.reset-password');

@@ -11,14 +11,47 @@ use Illuminate\Support\Facades\RateLimiter;
 use App\Validation\Fields\ValidationEmailField;
 use App\Validation\Fields\ValidationPasswordField;
 
+/**
+ * Livewire component that authenticates a user with throttling.
+ *
+ * Combines validation via custom field objects and Laravel's Auth facade.
+ * Applies a simple rate limit to mitigate brute-force attempts.
+ */
 class Login extends Component
 {
+    /**
+     * User email credential.
+     *
+     * @var string
+     */
     public string $email;
+
+    /**
+     * User password credential.
+     *
+     * @var string
+     */
     public string $password;
+
+    /**
+     * Whether to remember the authenticated session.
+     *
+     * @var bool
+     */
     public bool $remember;
     
+    /**
+     * Container for validation field objects.
+     *
+     * @var array<int, mixed>
+     */
     private array $validationRules = [];
 
+    /**
+     * Build validation fields for email and password.
+     *
+     * @return array<int, \App\Validation\Fields\ValidationFieldInterface>
+     */
     protected function getValidationRules(): array
     {
         return [
@@ -27,6 +60,11 @@ class Login extends Component
         ];
     }
 
+    /**
+     * Merge rules from composed validation field objects.
+     *
+     * @return array<string, mixed>
+     */
     protected function rules() {
         $rules = [];
 
@@ -37,6 +75,11 @@ class Login extends Component
         return $rules;
     }
 
+    /**
+     * Aggregate validation messages from field objects.
+     *
+     * @return array<string, string>
+     */
     protected function messages() {
         $messages = [];
 
@@ -47,6 +90,14 @@ class Login extends Component
         return $messages;
     }
 
+    /**
+     * Attempt to authenticate the user with throttling and remember option.
+     * On success, clears throttle, regenerates session, and redirects.
+     * On failure, increments throttle and throws a validation exception.
+     *
+     * @return void
+     * @throws ValidationException
+     */
     public function login() {
         $credentials = $this->validate();
         $throttleKey = 'login-'. $this->throttleKey();
@@ -69,12 +120,21 @@ class Login extends Component
     }
 
     /**
-     * Get the authentication rate limiting throttle key.
+     * Get the authentication rate limiting throttle key
+     * based on email and requester IP address.
+     *
+     * @return string
      */
     protected function throttleKey(): string
     {
         return Str::transliterate(Str::lower($this->email).'|' . request()->ip());
     }
+
+    /**
+     * Render component view.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function render()
     {
         return view('livewire.auth.login')

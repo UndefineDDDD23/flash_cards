@@ -39,4 +39,13 @@ return [
     'user_written_meaning'                              => 'Ваше значение слова на родном языке',
     'open_ai_generated_dictionary_element_translation'  => 'Открыть перевод элемента словаря, сгенерированный ИИ',
     'close_ai_generated_dictionary_element_translation' => 'Закрыть перевод элемента словаря, сгенерированный ИИ',
+    'delete'                                            => 'Удалить',
+    'edit'                                              => 'Редактировать',
+    'save'                                              => 'Сохранить',
+    'cancel'                                            => 'Отмена',
+    'flash_card_statuses'                               => [
+        'READY_TO_LEARN' => 'Готов к изучению',
+        'EXPECTS_REPEAT' => 'Ожидает повторения',
+        'STUDIED'        => 'Изучено',
+    ],
 ];

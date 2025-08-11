@@ -39,4 +39,13 @@ return [
     'user_written_meaning'                              => 'Your meaning of the word in your native language',
     'open_ai_generated_dictionary_element_translation'  => 'Open AI generated dictionary element translation',
     'close_ai_generated_dictionary_element_translation' => 'Close AI generated dictionary element translation',
+    'delete'                                            => 'Delete',
+    'edit'                                              => 'Edit',
+    'save'                                              => 'Save',
+    'cancel'                                            => 'Cancel',
+    'flash_card_statuses'                               => [
+        'READY_TO_LEARN' => 'Ready to learn',
+        'EXPECTS_REPEAT' => 'Expects repeat',
+        'STUDIED'        => 'Studied',
+    ],
 ];

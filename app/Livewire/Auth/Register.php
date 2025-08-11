@@ -18,17 +18,60 @@ use App\Validation\Fields\ValidationUsernameField;
 use App\Validation\Fields\ValidationLanguageCodeField;
 use App\Validation\Fields\ValidationPasswordConfirmationField;
 
+/**
+ * Livewire component that handles user registration.
+ *
+ * Validates credentials and language selections, creates a user, fires the
+ * Registered event, logs the user in, and triggers email verification.
+ */
 class Register extends Component
 {
+    /**
+     * Desired username.
+     * @var string
+     */
     public $username;
+    /**
+     * Registration email.
+     * @var string
+     */
     public $email;
+    /**
+     * Registration password (plain text; hashed before persistence).
+     * @var string
+     */
     public $password;
+    /**
+     * Confirmation of the registration password.
+     * @var string
+     */
     public $passwordConfirmation;
+    /**
+     * User's native language code (ISO-like code).
+     * @var string
+     */
     public $userNativeLanguageCode;
+    /**
+     * User's studied language code (must differ from native).
+     * @var string
+     */
     public $userStudiedLanguageCode;
+    /**
+     * Available languages for selection.
+     * @var Collection<int, \App\Models\Languages\Language>
+     */
     public Collection $languagesCollection;
+    /**
+     * Container for validation field objects.
+     * @var array<int, mixed>
+     */
     private array $validationRules = [];
 
+    /**
+     * Build validation field objects for registration form.
+     *
+     * @return array<int, \App\Validation\Fields\ValidationFieldInterface>
+     */
     protected function getValidationRules(): array
     {
         return [
@@ -41,6 +84,13 @@ class Register extends Component
         ];
     }
 
+    /**
+     * Compose the validation rules array, applying additional constraints:
+     * - studied language must differ from native language
+     * - email must be unique in users table
+     *
+     * @return array<string, mixed>
+     */
     protected function rules() {
         $rules = [];
 
@@ -57,6 +107,11 @@ class Register extends Component
         return $rules;
     }
 
+    /**
+     * Aggregate translated validation messages.
+     *
+     * @return array<string, string>
+     */
     protected function messages() {
         $messages = [];
 
@@ -67,10 +122,23 @@ class Register extends Component
         return $messages;
     }
 
+    /**
+     * Load available languages for the registration form.
+     *
+     * @return void
+     */
     public function mount() {
         $this->languagesCollection = Language::all();
     }
 
+    /**
+     * Validate input, create a new user, authenticate, and start email
+     * verification flow. Errors are logged; validation exceptions are surfaced
+     * to the form.
+     *
+     * @return void
+     * @throws ValidationException
+     */
     public function register() {
         try {
             $this->validate();

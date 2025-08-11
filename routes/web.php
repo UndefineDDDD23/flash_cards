@@ -15,28 +15,17 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Illuminate\Support\Facades\Http;
 
+// Public landing page
 Route::get('/', function () {
     return view('pages.welcome');
 })->name('welcome');
 
-Route::middleware('guest')->group(function () {
-    Route::get('/login', Login::class)->name('login');
-
-    Route::get('/forgot-password', ForgotPassword::class)->name('password.request');
-    Route::get('/reset-password/{token}', ResetPassword::class)->name('password.reset');
-});
-
 Route::middleware('auth')->group(function () {
-    Route::get('/verification/notice', VerificationNotice::class)->name('verification.notice');
-    Route::get('/verification/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-        $request->fulfill();
-        return redirect(route('welcome'));
-    })->middleware(['auth', 'signed'])->name('verification.verify');
-
+    // Flash cards area (requires authentication)
     Route::prefix('flash-cards')->name('flash-cards-')->group(function() {
         Route::get('/', function () {
             return view('pages.flash-cards.flash-cards-panel');
-        })->name('list');
+        })->name('panel');
     });
 });
 
