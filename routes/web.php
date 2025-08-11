@@ -35,7 +35,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('flash-cards')->name('flash-cards-')->group(function() {
         Route::get('/', function () {
-            return view('pages.flash-cards.flash-cards-list');
+            return view('pages.flash-cards.flash-cards-panel');
         })->name('list');
     });
 });
