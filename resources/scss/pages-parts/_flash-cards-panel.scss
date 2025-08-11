@@ -1,0 +1,30 @@
+.flash-cards-list {
+    margin: 0 auto;
+    max-width: 1024px;
+
+    pre {
+        white-space: pre-wrap;
+    }
+}
+
+.generated-dictionary-element-translation {
+    display: none;
+}
+
+.flash-cards-list__item.active .generated-dictionary-element-translation {
+    display: block;
+}
+
+.create-flash-card {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: 320px;
+
+    &__element {
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+}

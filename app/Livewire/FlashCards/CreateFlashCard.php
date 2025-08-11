@@ -23,9 +23,6 @@ class CreateFlashCard extends Component
     public string $userWrittenMeaning;
 
     public Translation $translation;
-    
-    public function mount() {
-    }
 
     private function generateDescriptionByAI(User $user, WordTranslationServiceInterface $wordTranslationService, OpenRouterDictionaryInterface $openRouterDictionary): bool {
         $dictionaryElement = DictionaryElement::where('element_text', '=', $this->studiedLanguageWord)->first();
@@ -39,14 +36,15 @@ class CreateFlashCard extends Component
         return true;
     }
 
-    public function createFlashCard() {        
-        $this->studiedLanguageWord = trim($this->studiedLanguageWord);
+    public function createFlashCard() {
         
         $this->validate([
-            'studiedLanguageWord' => 'required|string|max:255',
-            'userWrittenMeaning' => 'nullable|string|max:1000',
-        ]);
+            'studiedLanguageWord'   => 'required|string|min:2|max:255',
+            'userWrittenMeaning'    => 'required|string|min:2|max:1000',
+        ]);   
 
+        $this->studiedLanguageWord = trim($this->studiedLanguageWord);      
+        
         $user = Auth::user();
         $wordTranslationService = new WordTranslationService();
         $openRouterModel = new OpenRouterMistral();
@@ -55,10 +53,11 @@ class CreateFlashCard extends Component
         $generatedAiDesriptionStatus = $this->generateDescriptionByAI($user, $wordTranslationService, $openRouterDictionary);
 
         FlashCard::create([
-            'user_id' => $user->id,
-            'status_id' => FlashCardStatuses::READY_TO_LEARN->value,
-            'user_text' => $this->userWrittenMeaning,
-            'translation_id' => $generatedAiDesriptionStatus ? $this->translation->id : null,
+            'user_id'                       => $user->id,
+            'status_id'                     => FlashCardStatuses::READY_TO_LEARN->value,
+            'user_meaning_text'             => $this->userWrittenMeaning,
+            'user_dictionary_element_text'  => $this->studiedLanguageWord,
+            'translation_id'                => $generatedAiDesriptionStatus ? $this->translation->id : null,
         ]);
     }
 

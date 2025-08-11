@@ -12,7 +12,8 @@ class FlashCard extends Model
     protected $fillable = [
         'user_id',
         'status_id',
-        'user_text',
+        'user_meaning_text',
+        'user_dictionary_element_text',
         'translation_id',
     ];
 
