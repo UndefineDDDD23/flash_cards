@@ -31,8 +31,10 @@ return [
     'login'                                 => 'Login',
     'remember'                              => 'Remember?',
     'generate_ai_description_button'        => 'Generate AI description',
+    'create_flash_card'                     => 'Create flash card',
     'synonyms'                              => 'Synonyms',
     'examples'                              => 'Examples',
     'how_to_use'                            => 'How to use',
     'meaning'                               => 'Meaning',
+    'user_written_meaning'                  => 'Your meaning of the word in your native language',
 ];

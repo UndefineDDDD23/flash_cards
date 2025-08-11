@@ -31,8 +31,10 @@ return [
     'login'                                 => 'Логин',
     'remember'                              => 'Запомнить?',
     'generate_ai_description_button'        => 'Сгенерировать описание с помощью ИИ',
+    'create_flash_card'                     => 'Создать карточку',
     'synonyms'                              => 'Синонимы',
     'examples'                              => 'Примеры',
     'how_to_use'                            => 'Как использовать',
     'meaning'                               => 'Значение',
+    'user_written_meaning'                  => 'Ваше значение слова на родном языке',
 ];
