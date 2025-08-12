@@ -43,6 +43,8 @@ return [
     'edit'                                              => 'Редактировать',
     'save'                                              => 'Сохранить',
     'cancel'                                            => 'Отмена',
+    'search'                                            => 'Поиск',
+    'search-message'                                    => 'Карточки не найдены по вашему запросу.', 
     'flash_card_statuses'                               => [
         'READY_TO_LEARN' => 'Готов к изучению',
         'EXPECTS_REPEAT' => 'Ожидает повторения',

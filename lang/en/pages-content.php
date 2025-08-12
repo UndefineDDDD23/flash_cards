@@ -43,6 +43,8 @@ return [
     'edit'                                              => 'Edit',
     'save'                                              => 'Save',
     'cancel'                                            => 'Cancel',
+    'search'                                            => 'Search',
+    'search-message'                                    => 'No flashcards found matching your search.',
     'flash_card_statuses'                               => [
         'READY_TO_LEARN' => 'Ready to learn',
         'EXPECTS_REPEAT' => 'Expects repeat',

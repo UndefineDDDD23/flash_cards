@@ -18,8 +18,7 @@ use App\Validation\Fields\ValidationPasswordConfirmationField;
  * Accepts token and email (via query string), validates new password, and
  * updates the user's credentials via Laravel's password broker.
  */
-class ResetPassword extends Component
-{
+class ResetPassword extends Component {
     /**
      * Password reset token provided in the reset link.
      * @var string
@@ -54,7 +53,7 @@ class ResetPassword extends Component
     /**
      * Build validation field objects for password reset.
      *
-     * @return array<int, \App\Validation\Fields\ValidationFieldInterface>
+     * @return array<int, \App\Contracts\Validation\Fields\ValidationFieldInterface>
      */
     protected function getValidationRules(): array
     {

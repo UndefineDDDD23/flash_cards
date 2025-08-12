@@ -48,6 +48,13 @@ class FlashCardsList extends Component
     public ?string $editUserDictionaryElementText = null;
 
     /**
+     * Search term for filtering flashcards.
+     * 
+     * @var string
+     */
+    public string $searchElementText = '';
+
+    /**
      * Initializes the component by loading all flashcards for the authenticated user.
      * 
      * @return void
@@ -152,6 +159,34 @@ class FlashCardsList extends Component
             session()->flash('message', 'Flash card deleted successfully.');
         } else {
             session()->flash('error', 'Flash card not found.');
+        }
+    }
+
+    /**
+     * Searches for flashcards based on the property .
+     * 
+     * @return void
+     */
+    public function search() {
+        $this->validate([
+            'searchElementText' => 'string|max:255',
+        ]);
+
+        if($this->searchElementText === '') {
+            // If search term is empty, reload all flashcards
+            $this->flashCards = auth()->user()->flashCards()->with('translation')->get();
+            return;
+
+        }
+
+        // Filter flashcards based on the search term
+        $this->flashCards = auth()->user()->flashCards()
+            ->where('user_meaning_text', 'like', '%' . $this->searchElementText . '%')
+            ->orWhere('user_dictionary_element_text', 'like', '%' . $this->searchElementText . '%')
+            ->with('translation')
+            ->get();
+        if ($this->flashCards->isEmpty()) {
+            session()->flash('search-message', __('pages-content.search-message'));
         }
     }
 

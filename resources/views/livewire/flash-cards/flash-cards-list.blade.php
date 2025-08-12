@@ -1,4 +1,8 @@
 <div class="flash-cards-list">
+    <x-messages.simple-flash-message key="search-message" />
+    <x-validation.error-message :key="'searchElementText'"/>
+    <input wire:model.live.debounce.250ms="searchElementText" type="text" />
+    <button wire:click="search">{{ __('pages-content.search') }}</button>
     @foreach ($flashCards as $flashCard)
         <div id="{{ $flashCard->id }}" class="flash-cards-list__item">
             @if($editingFlashCardId === $flashCard->id)
@@ -28,6 +32,7 @@
             @else
                 <h3>{{ $flashCard->user_dictionary_element_text }}</h3>
                 <p>{{ $flashCard->user_meaning_text }}</p>
+                <p>{{ __('pages-content.flash_card_statuses.' . \App\Enums\FlashCards\FlashCardStatuses::tryFrom($flashCard->status->id)->name) }}</p>
 
                 <x-flash-cards.translation-object-formated-markup :translation="$flashCard->translation"/>
                 
