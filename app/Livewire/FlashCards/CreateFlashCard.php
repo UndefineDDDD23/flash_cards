@@ -12,6 +12,7 @@ use App\Services\AI\OpenRouterMistral;
 use App\Contracts\AI\OpenRouterInterface;
 use App\Services\AI\OpenRouterDictionary;
 use App\Enums\FlashCards\FlashCardStatuses;
+use App\Livewire\FlashCards\FlashCardsList;
 use App\Models\Dictionary\DictionaryElement;
 use App\Contracts\AI\OpenRouterDictionaryInterface;
 use App\Services\Dictionary\WordTranslationService;
@@ -131,7 +132,7 @@ class CreateFlashCard extends Component {
             'translation_id'                => $generatedAiDesriptionStatus ? $this->translation->id : null,
         ]);
 
-        $this->redirect(route('flash-cards.panel'));
+        $this->dispatch('flash-card-created')->to(FlashCardsList::class); 
     }
 
     /**

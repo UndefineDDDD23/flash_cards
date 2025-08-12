@@ -1,5 +1,5 @@
 <div id="{{ $flashCard->id }}" class="flash-cards-list__item">
-    @if($editingFlashCardId === $flashCard->id)
+    @if($isEditing)
         <x-validation.error-message :key="'editUserDictionaryElementText'"/>
         <input 
             type="text" 
@@ -38,7 +38,7 @@
             {{ __('pages-content.open_ai_generated_dictionary_element_translation') }}
         </button>
 
-        <button wire:click="startEditing({{ $flashCard->id }})">{{ __('pages-content.edit') }}</button>
-        <button wire:click="deleteFlashCard({{ $flashCard->id }})" onclick="return confirm('{{ __('pages-content.confirm_delete') }}')">{{ __('pages-content.delete') }}</button>
+        <button wire:click="startEditing()">{{ __('pages-content.edit') }}</button>
+        <button wire:click="deleteFlashCard()" onclick="return confirm('{{ __('pages-content.confirm_delete') }}')">{{ __('pages-content.delete') }}</button>
     @endif
 </div>

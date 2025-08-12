@@ -4,6 +4,7 @@ namespace App\Livewire\FlashCards;
 
 use Livewire\Component;
 use App\Models\FlashCards\FlashCard as FlashCardModel;
+use App\Livewire\FlashCards\FlashCardsList;
 
 class FlashCard extends Component
 {   
@@ -38,25 +39,23 @@ class FlashCard extends Component
     public ?string $editUserDictionaryElementText = null;
     
     /**
+     * Indicates whether the flashcard is currently being edited.
+     * 
+     * @var bool
+     */
+    public bool $isEditing = false;
+
+    /**
      * Starts the editing process for the selected flashcard.
-     * 
-     * @param int $flashCardId The ID of the flashcard to edit.
-     * 
+     *      
      * @return void
      */
-    public function startEditing(int $flashCardId){
-        // Find the flashcard in the loaded collection
-        $flashCard = $this->flashCards->firstWhere('id', $flashCardId);
-        if (!$flashCard) {
-            session()->flash('error', 'Flash card not found.');
-            return;
-        }
-
+    public function startEditing(){
         // Store flashcard details into temporary editing fields
-        $this->editingFlashCardId = $flashCardId;
-        $this->editUserMeaningText = $flashCard->user_meaning_text;
-        $this->editUserDictionaryElementText = $flashCard->user_dictionary_element_text;        
-        $this->editFlashCardStatus = $flashCard->status->id;
+        $this->isEditing = true;
+        $this->editUserMeaningText = $this->flashCard->user_meaning_text;
+        $this->editUserDictionaryElementText = $this->flashCard->user_dictionary_element_text;        
+        $this->editFlashCardStatus = $this->flashCard->status->id;
     }
 
     /**
@@ -65,7 +64,7 @@ class FlashCard extends Component
      * @return void
      */
     public function cancelEditing() {
-        $this->editingFlashCardId = null;
+        $this->isEditing = false;
         $this->editUserMeaningText = null;
         $this->editUserDictionaryElementText = null;
         $this->editFlashCardStatus = null;
@@ -80,34 +79,17 @@ class FlashCard extends Component
         $this->validate([
             'editUserMeaningText'               => 'required|string|max:1000',
             'editUserDictionaryElementText'     => 'required|string|max:255',
-            'editingFlashCardId'                => 'required|exists:flash_cards,id',
             'editFlashCardStatus'               => 'required|integer',
         ]);
-
-        // Find the flashcard belonging to the authenticated user
-        $flashCard = auth()->user()->flashCards()->find($this->editingFlashCardId);
-
-        if (!$flashCard) {
-            session()->flash('error', 'Flash card not found.');
-            $this->cancelEditing();
-            return;
-        }
-
+        
         // Update the flashcard in the database
-        $flashCard->update([
+        $this->flashCard->update([
             'user_meaning_text' => $this->editUserMeaningText,
             'user_dictionary_element_text' => $this->editUserDictionaryElementText,
             'status_id' => $this->editFlashCardStatus,
         ]);
 
-        // Update the flashcard in the local collection to reflect changes without reloading from DB
-        $this->flashCards = $this->flashCards->map(function ($card) use ($flashCard) {
-            if ($card->id === $flashCard->id) {
-                $card->user_meaning_text = $flashCard->user_meaning_text;
-                $card->user_dictionary_element_text = $flashCard->user_dictionary_element_text;
-            }
-            return $card;
-        });
+        $this->dispatch('flash-card-edited')->to(FlashCardsList::class); 
 
         $this->cancelEditing();
     }
@@ -119,20 +101,10 @@ class FlashCard extends Component
      * 
      * @return void
      */
-    public function deleteFlashCard(int $flashCardId) {
-        // Find the flashcard in the database
-        $flashCard = auth()->user()->flashCards()->find($flashCardId);
-        if ($flashCard) {
+    public function deleteFlashCard() {
             // Delete from database
-            $flashCard->delete();
-
-            // Remove from the local collection
-            $this->flashCards = $this->flashCards->reject(fn($card) => $card->id === $flashCardId);
-
-            session()->flash('message', 'Flash card deleted successfully.');
-        } else {
-            session()->flash('error', 'Flash card not found.');
-        }
+            $this->flashCard->delete();
+            $this->dispatch('flash-card-deleted')->to(FlashCardsList::class);
     }
 
     public function render()

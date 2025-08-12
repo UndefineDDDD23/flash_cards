@@ -4,6 +4,7 @@ namespace App\Livewire\FlashCards;
 
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
+use Livewire\Attributes\On; 
 
 /**
  * Livewire component for displaying and managing the user's flashcards.
@@ -32,7 +33,14 @@ class FlashCardsList extends Component
      * @return void
      */
     public function mount() {
-        // Load all user's flashcards with their related translations
+        $this->flashCards = auth()->user()->flashCards()->with('translation')->get();
+        // $this->refreshFlashCards();
+    }
+
+    #[On('flash-card-edited')]
+    #[On('flash-card-deleted')]
+    #[On('flash-card-created')]
+    public function refreshFlashCards() {
         $this->flashCards = auth()->user()->flashCards()->with('translation')->get();
     }
    
@@ -48,7 +56,7 @@ class FlashCardsList extends Component
 
         if($this->searchElementText === '') {
             // If search term is empty, reload all flashcards
-            $this->flashCards = auth()->user()->flashCards()->with('translation')->get();
+            $this->refreshFlashCards();
             return;
 
         }
