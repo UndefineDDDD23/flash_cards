@@ -23,9 +23,13 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     // Flash cards area (requires authentication)
     Route::prefix('flash-cards')->name('flash-cards-')->group(function() {
-        Route::get('/', function () {
+        Route::get('/list', function () {
             return view('pages.flash-cards.flash-cards-panel');
         })->name('panel');
+
+        Route::get('/study', function () {
+            return view('pages.flash-cards.study-flash-cards-page');
+        })->name('study');
     });
 });
 

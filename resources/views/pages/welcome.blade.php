@@ -4,6 +4,7 @@
 
         <main class="main">
             <a href="{{ route('flash-cards-panel') }}">Flash cards list</a>
+            <a href="{{ route('flash-cards-study') }}">Flash cards study</a>
         </main>
 
     <x-pages-structure.footer/>
