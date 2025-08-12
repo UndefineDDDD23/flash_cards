@@ -2,6 +2,7 @@
 
 namespace App\Livewire\FlashCards;
 
+use App\Enums\FlashCards\FlashCardStatuses;
 use Livewire\Component;
 use App\Models\FlashCards\FlashCard as FlashCardModel;
 use App\Livewire\FlashCards\FlashCardsList;
@@ -112,6 +113,18 @@ class FlashCard extends Component
             // Delete from database
             $this->flashCard->delete();
             $this->dispatch('flash-card-deleted')->to(FlashCardsList::class);
+    }
+
+    public function learned() {
+        // $this->flashCard->status_id = FlashCardStatuses::STUDIED;
+        // $this->flashCard->save();
+        $this->dispatch('flash-card-learned')->to(StudyFlashCards::class);
+    }
+
+    public function forgot() {
+        // $this->flashCard->status_id = FlashCardStatuses::EXPECTS_REPEAT;
+        // $this->flashCard->save();
+        $this->dispatch('flash-card-forgot')->to(StudyFlashCards::class);
     }
 
     public function render()

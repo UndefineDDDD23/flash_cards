@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Collection;
+use Livewire\Attributes\On;
 
 class StudyFlashCards extends Component
 {
@@ -14,6 +15,13 @@ class StudyFlashCards extends Component
     public Collection $flashCards;
 
     public function mount()
+    {
+        $this->refreshFlashCards();
+    }
+
+    #[On('flash-card-learned')]
+    #[On('flash-card-forgot')]
+    public function refreshFlashCards()
     {
         try {
             $user = Auth::user();
