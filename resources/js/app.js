@@ -13,3 +13,11 @@ document.querySelectorAll('button[data-flashcard-id]').forEach(button => {
         }
     });
 });
+
+document.querySelectorAll('.flip-btn').forEach(button => {
+  button.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const card = button.closest('.flash-card');
+    card.classList.toggle('flipped');
+  });
+});

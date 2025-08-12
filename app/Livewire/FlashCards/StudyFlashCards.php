@@ -20,14 +20,10 @@ class StudyFlashCards extends Component
             $this->flashCards = $user->flashCards()
                 ->whereHas('status', function ($statusQuery) {
                     $statusQuery->where('id', '=', FlashCardStatuses::READY_TO_LEARN->value);
-                })->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            $this->flashCards = new Collection();
-            session()->flash('error', __('No flashcards found for the user.'));
+                })->get();
         } catch (\Throwable $e) {
             $this->flashCards = new Collection();
-            session()->flash('error', __('An error occurred while fetching flashcards.'));
-            
+            session()->flash('message', __('pages-content.flash_cards_get_error'));            
         }
     }
 

@@ -107,9 +107,11 @@ $color-danger-hover: #b91c1c;
     display: none;
 }
 
-.flash-cards-list__item.active .generated-dictionary-element-translation {
+.flash-card.active .generated-dictionary-element-translation {
     display: block;
 }
+
+
 
 .create-flash-card {
     display: flex;
@@ -137,15 +139,38 @@ $color-danger-hover: #b91c1c;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: $color-text;
   background: $color-bg;
-  border-radius: 8px;
+  border-radius: 8px;  
+}
 
-  &__item {
+.flash-card {
     background: $color-white;
     padding: 1rem 1.5rem;
     border-radius: 6px;
     box-shadow: 0 2px 8px $color-shadow;
-    transition: box-shadow 0.3s ease;
+    transition-duration: 0.5s;
     position: relative;
+
+    .flash-card-front {
+        display: block;
+    }
+
+    .flash-card-back {
+        display: none;
+    }
+
+    &.active .generated-dictionary-element-translation {
+        display: block;
+    }
+
+    &.flipped {
+      .flash-card-back {
+          display: block;
+      }
+
+      .flash-card-front {
+          display: none;
+      }
+    }
 
     &:hover {
       box-shadow: 0 4px 12px $color-shadow-hover;
@@ -220,4 +245,3 @@ $color-danger-hover: #b91c1c;
       }
     }
   }
-}

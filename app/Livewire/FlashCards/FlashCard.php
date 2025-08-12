@@ -11,6 +11,13 @@ class FlashCard extends Component
     public FlashCardModel $flashCard;
 
     /**
+     * Indicates whether the flashcard is currently being studied.
+     * 
+     * @var bool
+     */
+    public bool $isStudying = false;
+
+    /**
      * The ID of the flashcard currently being edited.
      * 
      * @var int|null

@@ -45,6 +45,8 @@ return [
     'cancel'                                            => 'Cancel',
     'search'                                            => 'Search',
     'search-message'                                    => 'No flashcards found matching your search.',
+    'havent_flash_cards'                                => 'You have no flashcards to study.',
+    'flash_cards_get_error'                             => 'An error occurred while retrieving flashcards. Please try again later.',
     'flash_card_statuses'                               => [
         'READY_TO_LEARN' => 'Ready to learn',
         'EXPECTS_REPEAT' => 'Expects repeat',

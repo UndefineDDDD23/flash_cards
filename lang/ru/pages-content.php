@@ -45,6 +45,8 @@ return [
     'cancel'                                            => 'Отмена',
     'search'                                            => 'Поиск',
     'search-message'                                    => 'Карточки не найдены по вашему запросу.', 
+    'havent_flash_cards'                                => 'У вас нет карточек для изучения.',
+    'flash_cards_get_error'                             => 'Произошла ошибка при получении карточек. Пожалуйста, попробуйте позже.',
     'flash_card_statuses'                               => [
         'READY_TO_LEARN' => 'Готов к изучению',
         'EXPECTS_REPEAT' => 'Ожидает повторения',
