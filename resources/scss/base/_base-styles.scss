@@ -1,16 +1,21 @@
-$body-bg-color: #ffffff;
+$body-bg-color: #F3F9FF;
 $body-text-color: #000000;
 $links-color: #ffffff;
 $links-hover-color: #e47f7f;
-$default-transition-duration: 0.3s;
+$default-transition-duration: 0.8s;
 
 * {
     transition-duration: $default-transition-duration;
+    animation-timing-function: ease;
+    box-sizing: border-box;
 }
 
 body {
-    background-color: $body-bg-color;
-    color: $body-text-color;
+  background-color: $body-bg-color;
+  color: $body-text-color;
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 500;
+  font-style: normal;
 }
 
 .loading-spinner {
@@ -22,6 +27,94 @@ body {
   animation: spin 1s linear infinite;
 }
 
-@keyframes spin { 
+.page-link {
+  display: block;
+  width: 50px;
+  height: 100px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+textarea {
+  resize: none;
+  min-height: 60px;
+}
+
+input {
+  min-height: 40px;
+}
+
+select {
+  min-height: 30px;
+}
+
+input[type=checkbox] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  
+  display: inline-block;
+  vertical-align: middle; /* Чтобы выровнять с текстом метки */
+  
+  width: 18px; 
+  height: 18px;
+  
+  border: 1px solid #818181;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+  margin: 0; 
+
+  min-height: auto;
+}
+
+input[type=checkbox]:checked {
+  background-color: #6b94c4;
+}
+
+input[type=checkbox]:checked::before {
+  content: "✓";
+  color: #fff;
+  font-size: 14px;
+  display: block;
+  text-align: center;
+  line-height: 18px; /* Чтобы галочка центрировалась */
+}
+
+input[type=text], textarea, select {
+  display: block;
+  background-color: #ffffff;
+  border: 1px solid #818181;
+  padding: 5px;
+  border-radius: 5px;
+  color: #000000;
+  margin: 0;
+  font-size: 16px;
+
+  &:focus {
+    outline: none;
+    border-color: #6b94c4;
+    box-shadow: 0 0 6px 0px #6b94c4;
+  }
+}
+
+button {
+  cursor: pointer;
+  display: block;
+  padding: 12px;
+  border-radius: 5px;
+  background-color: #303030;
+  border: 1px solid #303030;
+  font-size: 14px;
+
+  &:hover {
+    background-color: rgba(48, 48, 48, 0.918);
+  }
+}
+
+.validation-error {
+  color: #d12424;
 }

@@ -14,13 +14,10 @@
                 </li>
             @endguest
             <li>
-                <a href="#" class="header-nav-bar-links-container__link">TEXT</a>
+                <a href="{{ route('flash-cards-panel') }}" class="header-nav-bar-links-container__link">{{ __('pages-content.flash_cards_panel') }}</a>
             </li>
             <li>
-                <a href="#" class="header-nav-bar-links-container__link">TEXT</a>
-            </li>
-            <li>
-                <a href="#" class="header-nav-bar-links-container__link">TEXT</a>
+                <a href="{{ route('flash-cards-study') }}" class="header-nav-bar-links-container__link">{{ __('pages-content.flash_cards_study') }}</a>
             </li>
         </ul>
     </nav>

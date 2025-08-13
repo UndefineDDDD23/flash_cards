@@ -4,10 +4,10 @@
         <div class="form-input-container__input">   
             <x-validation.error-message :key="'email'"/>
             <label for="email">{{ __('pages-content.email') }}</label>
-            <input id="email" wire:model="email" label="{{ __('pages-content.email') }}"/>   
+            <input type="text" id="email" wire:model="email" label="{{ __('pages-content.email') }}"/>   
         </div>
         @if(session()->has('sent-reset-password-link'))
-            <p>Reset password link sent</p>
+            <p>{{ __('pages-content.reset_password_link_sent') }}</p>
         @endif
         <button wire:click="sendResetPasswordLink">{{ __('pages-content.send_button') }}</button>
     </div>
