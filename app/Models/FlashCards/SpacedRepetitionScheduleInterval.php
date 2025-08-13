@@ -2,6 +2,7 @@
 
 namespace App\Models\FlashCards;
 
+use App\Models\FlashCards\FlashCard;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -14,11 +15,16 @@ class SpacedRepetitionScheduleInterval extends Model
      *
      * @var string
      */
-    protected $table = 'spaced_repetition_schedule_interval';
+    protected $table = 'spaced_repetition_schedule_intervals';
     /**
      * Mass-assignable attributes.
      *
      * @var array<int, string>
      */
     protected $fillable = ['interval_seconds', 'learning_step_forward', 'learning_step_back'];
+
+    public function flashCards()
+    {
+        return $this->hasMany(FlashCard::class, 'current_repetition_schedule_interval_id');
+    }
 }

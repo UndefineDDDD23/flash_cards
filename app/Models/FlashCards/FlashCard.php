@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Dictionary\Translation;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\FlashCards\FlashCardsStatus;
+use App\Models\FlashCards\SpacedRepetitionScheduleInterval;
 
 /**
  * User-specific flash card linked to a particular translation.
@@ -25,9 +26,14 @@ class FlashCard extends Model
         'status_id',
         'user_meaning_text',
         'user_dictionary_element_text',
+        'current_repetition_schedule_interval_id',
+        'last_learned_at',
         'translation_id',
     ];
 
+    protected $casts = [
+        'last_learned_at' => 'datetime',
+    ];
 
     /**
      * Translation this card is based on.
@@ -57,5 +63,15 @@ class FlashCard extends Model
     public function status()
     {
         return $this->belongsTo(FlashCardsStatus::class);
+    }
+
+    /**
+     * Current spaced-repetition schedule interval for this flash card.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function currentRepetitionScheduleInterval()
+    {
+        return $this->belongsTo(SpacedRepetitionScheduleInterval::class, 'current_repetition_schedule_interval_id');    
     }
 }

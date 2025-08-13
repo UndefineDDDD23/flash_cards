@@ -33,8 +33,7 @@ class FlashCardsList extends Component
      * @return void
      */
     public function mount() {
-        $this->flashCards = auth()->user()->flashCards()->with('translation')->get();
-        // $this->refreshFlashCards();
+        $this->refreshFlashCards();
     }
 
     #[On('flash-card-edited')]

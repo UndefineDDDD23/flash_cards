@@ -14,10 +14,13 @@ document.querySelectorAll('button[data-flashcard-id]').forEach(button => {
     });
 });
 
-document.querySelectorAll('.flip-btn').forEach(button => {
-  button.addEventListener('click', (e) => {
+document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.flip-btn');
+    if (!btn) return;
+
+    e.preventDefault();
     e.stopPropagation();
-    const card = button.closest('.flash-card');
-    card.classList.toggle('flipped');
-  });
+
+    const card = btn.closest('.flash-card');
+    if (card) card.classList.toggle('flipped');
 });

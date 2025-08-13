@@ -47,10 +47,10 @@
                 <button wire:click="deleteFlashCard()" onclick="return confirm('{{ __('pages-content.confirm_delete') }}')">{{ __('pages-content.delete') }}</button>
 
             @else
+                <button class="flip-btn">Flip</button>
                 <button wire:click="learned">{{ __('pages-content.learned') }}</button>
                 <button wire:click="forgot">{{ __('pages-content.forgot') }}</button>                
             @endif
-            <button class="flip-btn">Flip</button>
         </div>
     @endif
 </div>

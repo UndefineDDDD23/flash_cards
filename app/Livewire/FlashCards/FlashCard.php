@@ -3,6 +3,7 @@
 namespace App\Livewire\FlashCards;
 
 use App\Enums\FlashCards\FlashCardStatuses;
+use App\Models\FlashCards\SpacedRepetitionScheduleInterval;
 use Livewire\Component;
 use App\Models\FlashCards\FlashCard as FlashCardModel;
 use App\Livewire\FlashCards\FlashCardsList;
@@ -115,15 +116,47 @@ class FlashCard extends Component
             $this->dispatch('flash-card-deleted')->to(FlashCardsList::class);
     }
 
-    public function learned() {
-        // $this->flashCard->status_id = FlashCardStatuses::STUDIED;
-        // $this->flashCard->save();
+    /**
+     * Marks the flashcard as learned, updating its last learned time and incrementing the spaced repetition interval.
+     * 
+     * @return void
+     */
+    public function learned() {        
+        $this->flashCard->last_learned_at = now();
+        if($this->flashCard->current_repetition_schedule_interval_id == SpacedRepetitionScheduleInterval::all()->max('id')) {
+            $this->flashCard->status_id = FlashCardStatuses::STUDIED;
+        }
+        else {
+            $this->flashCard->status_id = FlashCardStatuses::EXPECTS_REPEAT;
+        }
+        if($this->flashCard->currentRepetitionScheduleInterval) {
+            $result = $this->flashCard->current_repetition_schedule_interval_id + $this->flashCard->currentRepetitionScheduleInterval->learning_step_forward;
+            if($result >= 1) {
+                $this->flashCard->current_repetition_schedule_interval_id = $result; // Decrement the interval by the learning step forward
+            } else {
+                $this->flashCard->current_repetition_schedule_interval_id = 1; // Default to 1 if no interval is set
+            }
+        } else {
+            $this->flashCard->current_repetition_schedule_interval_id = 1; // Default to 1 if no interval is set
+        }        
+        
+        $this->flashCard->save();
         $this->dispatch('flash-card-learned')->to(StudyFlashCards::class);
     }
 
-    public function forgot() {
-        // $this->flashCard->status_id = FlashCardStatuses::EXPECTS_REPEAT;
-        // $this->flashCard->save();
+    public function forgot() {        
+        if($this->flashCard->currentRepetitionScheduleInterval) {
+            $result = $this->flashCard->current_repetition_schedule_interval_id - $this->flashCard->currentRepetitionScheduleInterval->learning_step_back;
+            if($result >= 1) {
+                $this->flashCard->current_repetition_schedule_interval_id = $result; // Decrement the interval by the learning step forward
+            } else {
+                $this->flashCard->current_repetition_schedule_interval_id = 1; // Default to 1 if no interval is set
+            }
+        } else {
+            $this->flashCard->current_repetition_schedule_interval_id = 1; // Default to 1 if no interval is set
+        }
+        $this->flashCard->status_id = FlashCardStatuses::READY_TO_LEARN;
+        $this->flashCard->save();
         $this->dispatch('flash-card-forgot')->to(StudyFlashCards::class);
     }
 

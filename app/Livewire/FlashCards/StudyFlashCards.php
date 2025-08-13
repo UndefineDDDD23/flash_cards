@@ -13,6 +13,7 @@ class StudyFlashCards extends Component
 {
 
     public Collection $flashCards;
+    public int $refreshKey = 0;
 
     public function mount()
     {
@@ -29,6 +30,7 @@ class StudyFlashCards extends Component
                 ->whereHas('status', function ($statusQuery) {
                     $statusQuery->where('id', '=', FlashCardStatuses::READY_TO_LEARN->value);
                 })->get();
+                $this->refreshKey++;
         } catch (\Throwable $e) {
             $this->flashCards = new Collection();
             session()->flash('message', __('pages-content.flash_cards_get_error'));            
