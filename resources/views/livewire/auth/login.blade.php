@@ -17,7 +17,7 @@
             <label for="remember">{{ __('pages-content.remember') }}</label>   
         </div> 
 
-        <a href="{{ route('password.request') }}">Forgot password</a>
+        <a href="{{ route('password.request') }}">{{ __('pages-content.forgot_password') }}</a>
 
         <button wire:click="login">{{ __('pages-content.send_button') }}</button>
     </div>

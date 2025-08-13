@@ -50,6 +50,7 @@ return [
     'forgot'                                            => 'Forgot', 
     'reset_password_link_sent'                          => 'Reset password link sent',
     'reset_password_link_didnt_sent'                    => 'Reset password link didnt sent',
+    'forgot_password'                                   => 'Forgot password?',
     'flash_card_statuses'                               => [
         'READY_TO_LEARN' => 'Ready to learn',
         'EXPECTS_REPEAT' => 'Expects repeat',

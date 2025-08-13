@@ -50,6 +50,7 @@ return [
     'forgot'                                            => 'На повторение', 
     'reset_password_link_sent'                          => 'Ссылка с инструкциями восстановления отправлена',
     'reset_password_link_didnt_sent'                    => 'Ссылка с инструкциями восстановления не была отправлена',
+    'forgot_password'                                   => 'Забыли пароль?',
     'flash_card_statuses'                               => [
         'READY_TO_LEARN' => 'Готов к изучению',
         'EXPECTS_REPEAT' => 'Ожидает повторения',
