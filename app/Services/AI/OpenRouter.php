@@ -5,8 +5,18 @@ namespace App\Services\AI;
 use Illuminate\Support\Facades\Http;
 use App\Contracts\AI\OpenRouterInterface;
 
+/**
+ * Abstract class for OpenRouter AI service.
+ * 
+ * This class provides a method to run API queries using OpenRouter's chat completions endpoint.
+ */
 abstract class OpenRouter implements OpenRouterInterface
 {
+    /**
+     * Abstract method to get the string model id(name).
+     *
+     * @return string
+     */
     abstract protected function getStringModelID(): string;
 
     public function runApiQuery(string $message)
@@ -20,9 +30,8 @@ abstract class OpenRouter implements OpenRouterInterface
                 ['role' => 'system', 'content' => $message],
             ],
         ]);
-
+        
         $data = $response->json();
-
         return $data['choices'][0]['message']['content'] ?? null;
     }
 }

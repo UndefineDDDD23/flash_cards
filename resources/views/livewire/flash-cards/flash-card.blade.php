@@ -39,18 +39,21 @@
         <div class="flash-card-back">
             <p>{{ __('pages-content.meaning') }}: {{ $flashCard->user_meaning_text }}</p>
             <p>{{ __('pages-content.status') }}: {{ __('pages-content.flash_card_statuses.' . \App\Enums\FlashCards\FlashCardStatuses::tryFrom($flashCard->status->id)->name) }}</p>
-
-            <x-flash-cards.translation-object-formated-markup :translation="$flashCard->translation"/>
+            @if ($flashCard->translation)
+                <x-flash-cards.translation-object-formated-markup :translation="$flashCard->translation"/>                                               
+            @endif
             <div class="flash-card-back__buttons-container">     
-            <button class="flip-btn">{{ __('pages-content.flip') }}</button>
-                @if(!$isStudying)            
-                    <button 
-                        data-flashcard-id="{{ $flashCard->id }}"
-                        data-text-open="{{ __('pages-content.close_ai_generated_dictionary_element_translation') }}"
-                        data-text-close="{{ __('pages-content.open_ai_generated_dictionary_element_translation') }}"
-                    >
-                        {{ __('pages-content.open_ai_generated_dictionary_element_translation') }}
-                    </button>
+                <button class="flip-btn">{{ __('pages-content.flip') }}</button>
+                @if(!$isStudying)      
+                    @if ($flashCard->translation)
+                        <button 
+                            data-flashcard-id="{{ $flashCard->id }}"
+                            data-text-open="{{ __('pages-content.close_ai_generated_dictionary_element_translation') }}"
+                            data-text-close="{{ __('pages-content.open_ai_generated_dictionary_element_translation') }}"
+                        >
+                            {{ __('pages-content.open_ai_generated_dictionary_element_translation') }}
+                        </button>                        
+                    @endif
                     <button wire:click="startEditing()">{{ __('pages-content.edit') }}</button>
                     <button wire:click="deleteFlashCard()" onclick="return confirm('{{ __('pages-content.confirm_delete') }}')">{{ __('pages-content.delete') }}</button>
                 @else

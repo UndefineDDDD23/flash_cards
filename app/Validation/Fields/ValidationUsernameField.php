@@ -25,6 +25,12 @@ class ValidationUsernameField implements ValidationFieldInterface {
         return $this->required;
     }
 
+    /**
+     * Get the validation rules for the username field.
+     *
+     * @param array $additionalRules Additional rules to append.
+     * @return array
+     */
     public function rules(array $additionalRules = []): array {
         $rules[$this->fieldName] = [ 
             'string',
@@ -40,6 +46,12 @@ class ValidationUsernameField implements ValidationFieldInterface {
         return $rules;
     }
 
+    /**
+     * Get the validation error messages for the username field.
+     *
+     * @param array $additionalMessages Additional messages to append.
+     * @return array
+     */
     public function messages(array $additionalMessages = []): array {
         $fieldNameLocalized = __($this->localizationKey);
         $messages = [

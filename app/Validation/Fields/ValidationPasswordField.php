@@ -26,6 +26,12 @@ class ValidationPasswordField implements ValidationFieldInterface {
         return $this->required;
     }
 
+    /**
+     * Get the validation rules for the password field.
+     *
+     * @param array $additionalRules Additional rules to append.
+     * @return array
+     */
     public function rules(array $additionalRules = []): array {
         $rules[$this->fieldName] = [  
             'string',
@@ -34,7 +40,7 @@ class ValidationPasswordField implements ValidationFieldInterface {
             // 'regex:/[a-z]/',      // хотя бы одна строчная буква
             // 'regex:/[A-Z]/',      // хотя бы одна заглавная буква
             // 'regex:/[0-9]/',      // хотя бы одна цифра
-            // 'regex:/[@$!%*#?&]/'  // хотя бы один спецсимвол  // TODO: в проде убирать коментарии и добавить сообщения к данным правилам
+            // 'regex:/[@$!%*#?&]/'  // хотя бы один спецсимвол  // TODO: в проде убрать коментарии и добавить сообщения к данным правилам
         ];
 
         if ($this->isRequired()) {
@@ -46,6 +52,12 @@ class ValidationPasswordField implements ValidationFieldInterface {
         return $rules;
     }
 
+    /**
+     * Get the validation error messages for the password field.
+     *
+     * @param array $additionalMessages Additional messages to append.
+     * @return array
+     */
     public function messages(array $additionalMessages = []): array {
         $fieldNameLocalized = __($this->localizationKey);
         $messages = [

@@ -9,10 +9,27 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\On;
 
+/**
+ * Livewire component for studying flash cards.
+ * 
+ * This component retrieves flash cards that are ready to learn and allows users to study them.
+ * It listens for events related to flash card learning and forgetting to refresh the list of flash cards.
+ */
 class StudyFlashCards extends Component
 {
 
+    /**
+     * The collection of flash cards that are ready to learn.
+     *
+     * @var Collection
+     */
     public Collection $flashCards;
+
+    /**
+     * Key to force component refresh.
+     *
+     * @var int
+     */
     public int $refreshKey = 0;
 
     public function mount()
@@ -20,6 +37,9 @@ class StudyFlashCards extends Component
         $this->refreshFlashCards();
     }
 
+    // Updates the list of cards on "learned" or "forgotten" events.
+    // Loads cards with the READY_TO_LEARN status for the current user.
+    // On error, clears the list and shows a message.
     #[On('flash-card-learned')]
     #[On('flash-card-forgot')]
     public function refreshFlashCards()

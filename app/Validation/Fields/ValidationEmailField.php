@@ -4,6 +4,12 @@ namespace App\Validation\Fields;
 
 use App\Contracts\Validation\Fields\ValidationFieldInterface;
 
+/**
+ * Class ValidationEmailField
+ * 
+ * This class implements the ValidationFieldInterface to provide validation rules
+ * and messages for an email field in a form.
+ */
 class ValidationEmailField implements ValidationFieldInterface {
     protected int $maxStringLength = 255;
     protected string $localizationKey = 'pages-content.email';
@@ -11,7 +17,7 @@ class ValidationEmailField implements ValidationFieldInterface {
     protected bool $required;
     protected array $additionalRules = [];
     protected array $additionalMessages = [];
-
+    
     public function __construct(string $fieldName = 'email', bool $required = true) {
         $this->fieldName = $fieldName;
         $this->required = $required;
@@ -25,6 +31,12 @@ class ValidationEmailField implements ValidationFieldInterface {
         return $this->required;
     }
 
+    /**
+     * Get the validation rules for the email field.
+     *
+     * @param array $additionalRules Additional rules to append.
+     * @return array
+     */
     public function rules(array $additionalRules = []): array {
         $rules[$this->fieldName] = [
             'string',
@@ -41,6 +53,12 @@ class ValidationEmailField implements ValidationFieldInterface {
         return $rules;
     }
 
+    /**
+     * Get the validation error messages for the email field.
+     *
+     * @param array $additionalMessages Additional messages to append.
+     * @return array
+     */
     public function messages(array $additionalMessages = []): array {
         $fieldNameLocalized = __($this->localizationKey);
         $messages = [

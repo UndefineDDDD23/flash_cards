@@ -12,8 +12,7 @@ use App\Services\Dictionary\WordTranslationService;
  * This interface combines dictionary operations with OpenRouter AI capabilities,
  * allowing for AI-generated dictionary content.
  */
-interface OpenRouterDictionaryInterface
-{
+interface OpenRouterDictionaryInterface {
     /**
      * Gets the OpenRouter model instance.
      *

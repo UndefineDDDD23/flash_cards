@@ -4,6 +4,12 @@ namespace App\Validation\Fields;
 
 use App\Contracts\Validation\Fields\ValidationFieldInterface;
 
+/**
+ * Class ValidationPasswordConfirmationField
+ * 
+ * This class extends the ValidationPasswordField to provide validation rules
+ * and messages specifically for a password confirmation field in a form.
+ */
 class ValidationPasswordConfirmationField extends ValidationPasswordField implements ValidationFieldInterface {
     protected array $additionalRules;    
     protected array $additionalMessages;
